@@ -171,38 +171,41 @@
         <!-- BÀI 2 -->
         <div
           class="tab-pane fade"
+          class="tab-pane fade"
           id="pills-b2"
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
           <h1>BÀI 2</h1>
-          <p>Tính ngày</p>
+          <p>TÍNH TIỀN ĐIỆN</p>
           <div class="container w-75 mt-3 text-center">
             <div class="card">
               <div class="card-header text-danger font-weight-bold">
-                NHẬP VÀO THÁNG VÀ NĂM BẠN CẦN TÍNH NGÀY
+                NHẬP VÀO TÊN VÀ SỐ ĐIÊN ĐÃ TIÊU THU(kW)
               </div>
-              <div class="d-flex justify-content-between">
+              <div class="w-75 mx-auto">
                 <div class="card-body px-0">
-                  <label>THÁNG: </label>
+                  <label>TÊN: </label>
                   <input
-                    id="monthB2"
-                    type="number"
+                    id="name"
+                    type="text"
                     class="form-control d-inline w-50"
                   />
                 </div>
                 <div class="card-body px-0">
-                  <label>NĂM: </label>
+                  <label>Số điện đã tiêu thụ: </label>
                   <input
-                    id="yearB2"
+                    id="usedKw"
                     type="number"
-                    class="form-control d-inline w-50"
+                    class="form-control d-inline w-25"
                   />
+                  <label>kW</label>
                 </div>
               </div>
               <div class="text-center">
                 <button
-                  id="btnCountDay"
+                  id="btnCalcKw"
+                  onclick="ketQuaTongTien()"
                   class="bg-success text-white w-25 mx-2 p-2 rounded"
                 >
                   TÍNH
@@ -210,7 +213,7 @@
               </div>
 
               <div
-                id="dateResultB2"
+                id="usedResult"
                 class="card-footer text-muted py-4 mt-4 font-weight-bold mb-0"
               ></div>
             </div>

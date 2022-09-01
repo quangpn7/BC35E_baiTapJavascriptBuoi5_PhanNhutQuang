@@ -6,15 +6,16 @@
  * + Điểm ưu tiên theo khu vực (areaScore) X, A, B, C tương ứng với 2, 1, 0.5
  * + Điểm đối tượng (advaScore) 1, 2, 3 tương ứng với 2.5, 1.5 và 1
  *- XỬ LÝ: 
-   Tạo ra 1 function có các chức năng sau:
+   +Tạo ra 1 function có các chức năng sau:
    1. Kiểm tra các môn có điểm bằng 0 hay không. Nếu có thì return ngay và báo trượt
-   2. Nếu không có điểm nào bằng không thì tính tổng điểm 3 môn và các điểm khu vực, đối tượng
-   3. So sánh với điểm chuẩn để trả về trượt hay rớt.
-   4.DOM KẾT QUẢ
+   2. Nếu không có điểm nào bằng 0 thì tính tổng điểm 3 môn và các điểm khu vực, đối tượng
+   + Tạo thêm một function khác để tính tổng điểm các điểm ưu tiên
+   +Tiếp tục tạo 1 function khác có chúc năng so sánh và báo kết quả
   - ĐẦU RA: kết quả
 
  */
 
+//Function 1: Kiểm tra chất lượng đầu số nhập vào hệ thống
 function validScore(testScore1, testScore2, testScore3, standardScore) {
   if (testScore1 == 0 || testScore2 == 0 || testScore3 == 0) {
     return (result =
@@ -33,7 +34,7 @@ function validScore(testScore1, testScore2, testScore3, standardScore) {
     return (result = testScore1 + testScore2 + testScore3);
   }
 }
-
+//Function 2: Tính tổng điểm ưu tiên
 function scoreAdvancedCalc(areaScore, advaScore) {
   if (areaScore == "0.5") {
     areaScore = 0.5;
@@ -56,30 +57,31 @@ function scoreAdvancedCalc(areaScore, advaScore) {
   scoreAdTotal = areaScore + advaScore;
   return scoreAdTotal;
 }
-
+//Function 3: So sánh điểm và báo kết quả
 function resultRun() {
   var testScore1 = document.getElementById("testScore1").value * 1;
   var testScore2 = document.getElementById("testScore2").value * 1;
   var testScore3 = document.getElementById("testScore3").value * 1;
   var standardScore = document.getElementById("standardScore").value * 1;
-
+  //Sử dụng function 1 với các biến vừa gán
   var testTotalScore = validScore(
     testScore1,
     testScore2,
     testScore3,
     standardScore
   );
-
+  //Nếu function 1 trả về dạng khác số thì return chương trình
   if (typeof testTotalScore != typeof 1) {
     return (document.getElementById(
       "finalDOM"
     ).innerHTML = `<p class='mb-0'>${result}</p>`);
   } else {
+    //Nếu chương trình chay đến đây thì mới gọi function 2
     var areaScore = document.getElementById("areaScore").value;
     var advaScore = document.getElementById("objectStudent").value;
     var finalScore =
       testTotalScore + scoreAdvancedCalc(areaScore, advaScore) * 1;
-
+    //Tạo thông báo kết quả
     if (finalScore >= standardScore) {
       result = "Bạn đã <span class='text-danger'>ĐẠT</span>";
     } else {
@@ -90,4 +92,61 @@ function resultRun() {
   return (document.getElementById(
     "finalDOM"
   ).innerHTML = `Kết quả:<span class='text-danger'> ${finalScore}</span> → ${result}`);
+}
+
+/**BÀI 2: TÍNH TIỀN ĐIỆN ĐÃ TIÊU THỤ
+ * -GIẢ SỬ: Người dùng nhập vào tên và số điện đã sử dụng (kW). Chương trình sẽ tính ra số tiền cần đóng.
+ * -ĐẦU VÀO: người dùng nhập vào tên và số lượng kW đã sử dụng
+ * -XỬ LÝ:
+ * 1. Gán biến số kW vào usedKW
+ * 3. Ta tính bằng công thức sau dựa vào trường hợp tương ứng
+ * +TH1: kw > 350
+ * tongTien =
+      50 * 500 + 50 * 650 + 100 * 850 + 150 * 1100 + (usedKw - 350) * 1300
+  +TH2 kw <= 350 và kw > 300
+  tongTien = 50 * 500 + 50 * 650 + (usedKw - 100) * 850
+  +TH3 kw <= 100 và kw > 50
+   tongTien = 50 * 500 + (usedKw - 50) * 650
+   +TH4 kw <= 50 hoăc else
+   tongTien = usedKw *500
+
+ * LƯU Ý: Để phép tính không bị lỗi ta sẽ if else để đảm bảo rằng số nhập vào khác 0 và nhỏ hơn 0
+ * ĐẦU RA: tongTien
+ */
+//Function 1: Tính tổng tiền
+function tongTien(usedKw) {
+  var tongTien;
+  if (usedKw <= 0) {
+    return;
+  } else if (usedKw > 350) {
+    tongTien =
+      50 * 500 + 50 * 650 + 100 * 850 + 150 * 1100 + (usedKw - 350) * 1300;
+    return tongTien;
+  } else if (usedKw <= 350 && usedKw > 100) {
+    tongTien = 50 * 500 + 50 * 650 + (usedKw - 100) * 850;
+    return tongTien;
+  } else if (usedKw <= 100 && usedKw > 50) {
+    tongTien = 50 * 500 + (usedKw - 50) * 650;
+    return tongTien;
+  } else {
+    tongTien = usedKw * 500;
+    return tongTien;
+  }
+}
+//Function 2: Tạo kết quả
+function ketQuaTongTien() {
+  var currentFormat = new Intl.NumberFormat("VN-vn");
+  var name = document.getElementById("name").value;
+  //Gán resultKw = function 1 với param được DOM trực tiếp từ web
+  var resultKw = currentFormat.format(
+    tongTien(document.getElementById("usedKw").value * 1)
+  );
+  if (resultKw == "NaN") {
+    document.getElementById(
+      "usedResult"
+    ).innerHTML = `Số bạn nhập không hợp lệ`;
+  } else
+    document.getElementById(
+      "usedResult"
+    ).innerHTML = `Họ tên: <span class='text-danger'>${name}</span>; Tiền điện: <span class='text-danger'>${resultKw} VND</span>`;
 }
